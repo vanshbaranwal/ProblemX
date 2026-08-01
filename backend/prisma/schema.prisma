@@ -9,15 +9,22 @@ generator client {
   output   = "../src/generated/prisma"
 }
 
-enum UserRole {
-  ADMIN
-  USER
-}
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+enum UserRole {
+  ADMIN
+  USER
+}
+
+enum Difficulty {
+  EASY
+  MEDIUM
+  HARD
+} 
 
 
 model User {
@@ -29,4 +36,29 @@ model User {
   password String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  problems Problem[]
+}
+
+model Problem {
+  id String @id @default(uuid())
+  title String
+  description String
+  difficulty Difficulty
+  tags String[] // e.g.["tag1", "tag2", "tag3"]  
+  userId String
+  examples Json
+  constraints String
+  hints String?
+  editorial String?
+
+  testcases Json
+  codeSnippet Json
+  referenceSolutions Json
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // relationship
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
