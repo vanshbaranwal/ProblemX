@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import { db } from "../libs/db.js";
+import { UserRole } from "../generated/prisma/index.js";
 
 dotenv.config();
 
@@ -73,7 +74,7 @@ export const checkAdmin = async(req, res, next) => {
             }
         });
 
-        if(!user || user.role !== "admin"){
+        if(!user || user.role !== UserRole.ADMIN){      //fixed a typo
             return res.status(403).json({
                 message: "access denied - admins only",
             });

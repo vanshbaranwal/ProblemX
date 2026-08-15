@@ -1,7 +1,5 @@
-import { error } from "node:console";
 import { db } from "../libs/db.js";
 import { getJudge0LanguageId, pollBatchResults, submitBatch } from "../libs/judge0.lib.js";
-import { stdin } from "node:process";
 
 
 
@@ -31,7 +29,7 @@ export const createProblem = async(req, res) => {
                 stdin: input,
                 expected_output: output,
             }));
-
+  
             const submissionResults = await submitBatch(submissions);
             const tokens = submissionResults.map((res) => res.token);
 
@@ -39,34 +37,44 @@ export const createProblem = async(req, res) => {
 
             for(let i = 0; i < results.length; i++){
                 const result = results[i];
+                console.log("result --------", result);
+                // console.log(`testcase ${ i + 1 } and language ${ language } ------- result ${ JSON.stringify(result.status.description) }`);
 
-                if(result.status.id !== 3){
+                if(!result.status || result.status.id !== 3){
                     return res.status(400).json({
                         error: `testcase ${i+1} failed for language ${language}`
                     });
                 }
             }
 
-            const newProblem = await db.problem.create({
-                data: {
-                    title,
-                    description,
-                    difficulty,
-                    tags,
-                    examples,
-                    constraints,
-                    testcases,
-                    codeSnippet,
-                    referenceSolutions,
-                    userId: req.user.id,
-                },
-            });
-
-            return res.status(201).json(newProblem);
-
         }
-    } catch (error) {
         
+        const newProblem = await db.problem.create({
+            data: {
+                title,
+                description,
+                difficulty,
+                tags,
+                examples,
+                constraints,
+                testcases,
+                codeSnippet,
+                referenceSolutions,
+                userId: req.user.id,
+            },
+        });
+
+        return res.status(201).json({
+            success: true,
+            message: "problem created successfully",
+            problem: newProblem,
+        });
+        
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            error: "error while creating problem",
+        });
     }
 
 };

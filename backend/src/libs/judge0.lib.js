@@ -1,6 +1,5 @@
 import axios from "axios";
 import dotenv from "dotenv";
-import { resolve } from "node:dns";
 
 dotenv.config();
 
@@ -16,13 +15,19 @@ export const getJudge0LanguageId = (language) => {
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
+const judge0Headers = {
+    "Content-Type": "application/json",
+    "X-Auth-Token": process.env.JUDGE0_API_KEY,
+};
+
 export const pollBatchResults = async(tokens) => {
     while(true){
         const { data } = await axios.get(`${process.env.JUDGE0_API_URL}/submissions/batch`, {
             params: {
                 tokens: tokens.join(","),
                 base64_encoded: false,
-            }
+            },
+            headers: judge0Headers,
         });
 
         const results = data.submissions;
@@ -37,9 +42,10 @@ export const pollBatchResults = async(tokens) => {
 };
 
 export const submitBatch = async(submissions) => {
-    const { data } = await axios.post(`${process.env.JUDGE0_API_URL}/submissions/batch?base64_encoded=false`, {
-        submissions
-    });
+    const { data } = await axios.post(`${process.env.JUDGE0_API_URL}/submissions/batch?base64_encoded=false`,
+        { submissions },
+        { headers: judge0Headers },
+    );
 
     console.log("submission results: ", data);
 
