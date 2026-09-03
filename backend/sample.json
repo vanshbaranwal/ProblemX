@@ -1,26 +1,25 @@
 {
-    "title": "add two numbers",
-    "description": "given two numbers a and b add them up and return the output",
+    "title": "Add Two Numbers",
+    "description": "Given two numbers a and b add them up and return the outout",
     "difficulty": "EASY",
-    "tags": ["maths", "operators", "addition"],
+    "tags": [
+        "math",
+        "operators",
+        "addition"
+    ],
     "examples": {
         "PYTHON": {
             "input": "3 7",
             "output": "10",
-            "explaination": "adding 3 and 7 gives 10"
+            "explanation": "Adding 3 and 7 gives 10."
         },
         "JAVASCRIPT": {
             "input": "-5 12",
             "output": "7",
-            "explaination": "adding -5 and 12 gives 7"
-        },
-        "JAVA": {
-            "input": "43 6",
-            "output": "49",
-            "explaination": "adding 43 and 6 gives 49"
+            "explanation": "Adding -5 and 12 gives 7."
         }
     },
-    "constraints": "-10^9 <= a, b <= 10^9",
+    "constraints": "-10^9 ≤ a, b ≤ 10^9",
     "testcases": [
         {
             "input": "100 200",
@@ -45,4 +44,4 @@
         "PYTHON": "import sys\ninput_line = sys.stdin.read()\na, b = map(int, input_line.split())\nprint(a + b)",
         "JAVA": "import java.util.Scanner;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int a = sc.nextInt();\n        int b = sc.nextInt();\n        System.out.println(a + b);\n    }\n}"
     }
-} 
+}
