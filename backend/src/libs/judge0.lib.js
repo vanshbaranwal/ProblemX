@@ -51,3 +51,14 @@ export const submitBatch = async(submissions) => {
 
     return data; // [{ token }, { token }, { token }]
 };
+
+export function getLanguageName(LangaugeId){
+    const LANGUAGE_NAMES = {
+        74: "Typescript",
+        63: "Javascript",
+        71: "Python",
+        62: "Java"
+    }
+
+    return LANGUAGE_NAMES[LangaugeId] || "unknown";
+};
