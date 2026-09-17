@@ -140,7 +140,7 @@ model Playlist{
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  problem ProblemInPlaylist[]
+  problems ProblemInPlaylist[]
   
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
