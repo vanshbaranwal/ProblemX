@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
-import { useForm } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { Link } from "react-router-dom"
+import React , {useState} from 'react'
+import {useForm} from "react-hook-form"
+import {zodResolver} from "@hookform/resolvers/zod"
+import { Link } from 'react-router-dom'
 import {
   Code,
   Eye,
@@ -9,32 +9,41 @@ import {
   Loader2,
   Lock,
   Mail,
-} from "lucide-react"
-import { z } from "zod"
-import AuthImagePattern from '../../components/authImagePattern'
+} from "lucide-react";
+
+import {z} from "zod";
+import AuthImagePattern from '../components/AuthImagePattern';
+import { useAuthStore } from "../store/useAuthStore";
 
 const SignUpSchema = z.object({
-  email: z.string().email("enter a valid email"),
-  password: z.string().min(6, "password must be atleast 6 characters long"),
-  name: z.string().min(3, "name must be atleast 3 characters long"),
-
+  email:z.string().email("Enter a valid email"),
+  password:z.string().min(6 , "Password must be atleast of 6 characters"),
+  name:z.string().min(3 , "Name must be atleast 3 character")
 })
 
 const SignUpPage = () => {
 
-  const [showPassword, setShowPassword] = useState(false);
+  const [showPassword , setShowPassword] = useState(false);
+
+  const {signup , isSigninUp} = useAuthStore()
 
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState:{errors},
   } = useForm({
-    resolver: zodResolver(SignUpSchema)
+    resolver:zodResolver(SignUpSchema)
   })
 
-  const onSubmit = async(data) => {
-    console.log(data);
+  const onSubmit = async (data)=>{
+   try {
+    await signup(data)
+    console.log("signup data" , data)
+   } catch (error) {
+     console.error("SignUp failed:", error);
+   }
   }
+
 
   return (
     <div className='h-screen grid lg:grid-cols-2'>
@@ -138,8 +147,16 @@ const SignUpPage = () => {
             <button
               type="submit"
               className="btn btn-primary w-full"
+             disabled={isSigninUp}
             >
-              Signup
+               {isSigninUp ? (
+                <>
+                  <Loader2 className="h-5 w-5 animate-spin" />
+                  Loading...
+                </>
+              ) : (
+                "Sign in"
+              )}
             </button>
           </form>
 
