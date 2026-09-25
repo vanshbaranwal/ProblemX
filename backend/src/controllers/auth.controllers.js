@@ -153,7 +153,7 @@ export const check = async(req, res) => {
         });
 
     } catch (error) {
-        console.error("error checking user: ", user);
+        console.error("error checking user: ", error); // typo fixed
         res.status(500).json({
             error: "error checking user",
         });
